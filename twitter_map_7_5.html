@@ -17,7 +17,8 @@
 <div id="map"></div>
 <script>
   var popup;
-	mapboxgl.accessToken = 'pk.eyJ1Ijoib2J1Y2hlbCIsImEiOiJmOWQ2MzQxNmE0M2Y3YmVjNzA2NmM2MGQzYTIwYmQ3OCJ9.psxJSN8q9n2-HfFGoIUNJA';
+  
+mapboxgl.accessToken = 'pk.eyJ1Ijoib2J1Y2hlbCIsImEiOiJmOWQ2MzQxNmE0M2Y3YmVjNzA2NmM2MGQzYTIwYmQ3OCJ9.psxJSN8q9n2-HfFGoIUNJA';
 var map = new mapboxgl.Map({
 container: 'map',
 style: 'mapbox://styles/mapbox/light-v10',
@@ -29,10 +30,11 @@ map.on('load', function () {
     // Add an image to use as a custom marker
 
 
-map.addSource('points1', {
+var dd=map.addSource('points1', {
 'type': 'geojson',
 'data': 'supercommunities_twitter_improved_all2_short_last2_7_1_updated2_filtered_5.json'
 });
+    console.log(dd["fetaures"][0]);
 // Add a symbol layer                                                                                                                                                                
 map.addLayer({
 'id': 'points1',
