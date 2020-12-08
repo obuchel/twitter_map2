@@ -1,0 +1,76 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Draw GeoJSON points</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+<script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+<style>
+	body { margin: 0; padding: 0; }
+	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var popup;
+	mapboxgl.accessToken = 'pk.eyJ1Ijoib2J1Y2hlbCIsImEiOiJmOWQ2MzQxNmE0M2Y3YmVjNzA2NmM2MGQzYTIwYmQ3OCJ9.psxJSN8q9n2-HfFGoIUNJA';
+var map = new mapboxgl.Map({
+container: 'map',
+style: 'mapbox://styles/mapbox/light-v10',
+center: [-96, 37.8],
+zoom: 3
+});
+ 
+map.on('load', function () {
+    // Add an image to use as a custom marker
+
+
+map.addSource('points1', {
+'type': 'geojson',
+'data': 'supercommunities_twitter_improved_all2_short_last2_7_1_updated2_filtered_5.json'
+});
+// Add a symbol layer                                                                                                                                                                
+map.addLayer({
+'id': 'points1',
+'type': 'circle',
+'source': 'points1',
+    'paint':{
+// make circles larger as the user zooms from z12 to z22                                                                                                                            
+ //   'circle-radius': 3,                                                                                                                                                           
+    'circle-radius': ['get', 's'],
+// color circles by ethnicity, using a match expression                                                                                                                             
+// https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match                                                                                                               
+    'circle-color': ['get', 'color'],
+    'circle-stroke-color':'#000000',
+    'circle-stroke-width':0.2
+
+}
+});    
+    
+
+map.on('click', 'points1', function(e) {
+    if (typeof popup=="object") popup.remove();
+    var lats=e.lngLat;
+    var htm=e.features[0]["properties"]["title"]+" "+e.features[0]["properties"]["color"];
+popup=new mapboxgl.Popup()
+.setLngLat(lats)
+.setHTML(htm)
+.addTo(map);
+      
+
+
+
+});
+
+
+    
+
+});
+</script>
+ 
+</body>
+</html>
