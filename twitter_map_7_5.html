@@ -66,7 +66,11 @@ popup=new mapboxgl.Popup()
 .setHTML(htm)
 .addTo(map);
       
-
+map.setPaintProperty(
+  'points1', 
+    'circle-color':'white' 
+//  ['match', ['get', 'id'], 'example-id', 0.5 , 1]
+);
 
 
 });
