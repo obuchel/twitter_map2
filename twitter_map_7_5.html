@@ -65,7 +65,7 @@ popup=new mapboxgl.Popup()
 .setLngLat(lats)
 .setHTML(htm)
 	    .addTo(map);
-	var l=e.features[0]['id'];
+	var l=e.features[0]['properties']['title'].split(' ')[2];
 	console.log(e.features);
 	map.setPaintProperty(
   'points1', 
