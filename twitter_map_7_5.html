@@ -67,11 +67,16 @@ popup=new mapboxgl.Popup()
 	    .addTo(map);
 	var l=e.features[0]['properties']['title'].split(' ')[2];
 	console.log(l);
+	fetch(l.sustr(0,2)+'/'+l+'.json')
+  .then(response => response.json())
+	    .then(data =>
+		  console.log(data);
 map.setPaintProperty(
   'points1', 
   'circle-radius', 
   ['match', ['get', 'id'], l, 10 , 0]
 );
+);	
 /*      
 map.setPaintProperty(
   ['match', ['get', 'title'], 'example-id', 0.5 , 1], 'circle-radius',0 
