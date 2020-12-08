@@ -57,8 +57,8 @@ map.addLayer({
     map.on('click', 'points1', function(e) {
 	
 	if (typeof popup=="object") popup.remove();
-	var features = map.querySourceFeatures('points1');
-     console.log(features);
+	//var features = map.querySourceFeatures('points1');
+     //console.log(features);
 
     var lats=e.lngLat;
     var htm=e.features[0]["properties"]["title"]+" "+e.features[0]["properties"]["color"];
@@ -74,7 +74,9 @@ popup=new mapboxgl.Popup()
 	    .then(data => {
 		var dd=data[l];
 		var kkeys=d3.keys(dd);
-		console.log(d3.sum(d3.values(kkeys)));
+		console.log(d3.values(dd));
+		console.log(dd);
+
 for (var i=0; i<kkeys.length; i++) {
 		    
 map.setPaintProperty(
