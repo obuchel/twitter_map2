@@ -82,13 +82,13 @@ for (var i=0; i<kkeys.length; i++) {
 map.setPaintProperty(
   'points1', 
   'circle-radius', 
-    ['match', ['get', 'id'], kkeys[i], d3.values(dd)[i]/d3.sum(d3.values(dd))*10 , 1.5]
+    ['match', ['get', 'id'], kkeys[i], d3.values(dd)[i]/d3.sum(d3.values(dd))*10 , 2]
 );
 
     map.setPaintProperty(
   'points1',
   'circle-opacity',
-    ['match', ['get', 'id'], kkeys[i], 0.5 , 0]
+    ['match', ['get', 'id'], kkeys[i], 1 , 0.5]
 );
 		}		    
 	    });	
