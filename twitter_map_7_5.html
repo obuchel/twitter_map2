@@ -8,6 +8,7 @@
 <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
 <script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
 <link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.3.0/d3.min.js" integrity="sha512-wKo55+1oH5DGJ19ScVUHTtcZiqJuSnknSs8CgzzEm1lNftJRDXN/kWpF9Kx+vPam8HBeg53OxS0MYd0+Iz9cjQ==" crossorigin="anonymous"></script>
 <style>
 	body { margin: 0; padding: 0; }
 	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
@@ -71,12 +72,17 @@ popup=new mapboxgl.Popup()
 	fetch(l.substr(0,2)+'.json')
   .then(response => response.json())
 	    .then(data => {
-		  console.log(data);
+		var dd=data[l];
+		var kkeys=d3.keys(dd);
+		console.log(d3.sum(d3.values(kkeys)));
+for (var i=0; i<kkeys.length; i++) {
+		    
 map.setPaintProperty(
   'points1', 
   'circle-radius', 
-  ['match', ['get', 'id'], l, 10 , 0]
+  ['match', ['get', 'id'], kkeys[i], 10 , 0]
 );
+		}		    
 	    });	
 /*      
 map.setPaintProperty(
