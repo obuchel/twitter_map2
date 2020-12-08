@@ -68,7 +68,7 @@ popup=new mapboxgl.Popup()
 	var l=e.features[0]['properties']['title'].split(' ')[2];
 	console.log(l);
 
-	fetch(l.sustr(0,2)+'/'+l+'.json')
+	fetch(l.substr(0,2)+'/'+l+'.json')
   .then(response => response.json())
 	    .then(data => {
 		  console.log(data);
