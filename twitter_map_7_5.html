@@ -69,8 +69,8 @@ popup=new mapboxgl.Popup()
 	console.log(e.features);
 	map.setPaintProperty(
   'points1', 
-  'circle-opacity', 
-  ['match', ['get', 'id'], l, 1 , 0]
+  'circle-radius', 0
+//  ['match', ['get', 'id'], l, 1 , 0]
 );
 /*      
 map.setPaintProperty(
