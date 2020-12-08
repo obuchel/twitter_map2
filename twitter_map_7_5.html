@@ -101,7 +101,11 @@ map.setPaintProperty(
 */
 		}		    
 
-map.setPaintProperty(
+
+
+/*
+
+		map.setPaintProperty(
   'points1',
     'circle-radius', ['match', ['get', 'id'], kks,kks0 ]  
                 );
@@ -110,7 +114,9 @@ map.setPaintProperty(
   'points1',
 		     'circle-opacity',['match', ['get', 'id'],vals,vals0]
                 );
+*/
 
+		map.setFilter(layer, '==', ['get', 'id'], kks);
 	    });	
 /*      
 map.setPaintProperty(
