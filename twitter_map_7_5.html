@@ -103,12 +103,12 @@ map.setPaintProperty(
 
 map.setPaintProperty(
   'points1',
-    'circle-radius',kks,kks0
+    'circle-radius', ['match', ['get', 'id'], kkeys,kkeys0 ]  
                 );
 
                  map.setPaintProperty(
   'points1',
-		     'circle-opacity',vals,vals0
+		     'circle-opacity',['match', ['get', 'id'],vals,vals0]
                 );
 
 	    });	
