@@ -77,18 +77,12 @@ popup=new mapboxgl.Popup()
 		//console.log(d3.values(dd));
 		//console.log(dd);
 
-		map.setPaintProperty(
-  'points1',
-  'circle-radius',2
-		);
-
-		 map.setPaintProperty(
-  'points1',
-  'circle-opacity',0.5
-                );
-
+		var kks=[];
+		var vals=[];
 for (var i=0; i<kkeys.length; i++) {
-		    
+kks.push(kkeys[i]);
+vals.push(2+d3.values(dd)[i]/d3.sum(d3.values(dd))*10);
+/*		    
 map.setPaintProperty(
   'points1', 
   'circle-radius', 
@@ -100,7 +94,19 @@ map.setPaintProperty(
   'circle-opacity',
     ['match', ['get', 'id'], kkeys[i], 1 ]
 );
+*/
 		}		    
+
+map.setPaintProperty(
+  'points1',
+    'circle-radius',kks,2
+                );
+
+                 map.setPaintProperty(
+  'points1',
+		     'circle-opacity',vals,0.5
+                );
+
 	    });	
 /*      
 map.setPaintProperty(
