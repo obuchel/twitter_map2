@@ -67,22 +67,22 @@ popup=new mapboxgl.Popup()
 .setHTML(htm)
 	    .addTo(map);
 	var l=e.features[0]['properties']['title'].split(' ')[2];
-	console.log(l);
+	//console.log(l);
 
 	fetch(l.substr(0,2)+'.json')
   .then(response => response.json())
 	    .then(data => {
 		var dd=data[l];
 		var kkeys=d3.keys(dd);
-		console.log(d3.values(dd));
-		console.log(dd);
+		//console.log(d3.values(dd));
+		//console.log(dd);
 
 for (var i=0; i<kkeys.length; i++) {
 		    
 map.setPaintProperty(
   'points1', 
   'circle-radius', 
-  ['match', ['get', 'id'], kkeys[i], 10 , 3]
+    ['match', ['get', 'id'], kkeys[i], d3.values(dd)[i]/d3.sum(d3.values(dd)) , 2]
 );
 		}		    
 	    });	
