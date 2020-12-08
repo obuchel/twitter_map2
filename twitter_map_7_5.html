@@ -52,10 +52,13 @@ map.addLayer({
 }
 });    
     
-    var features = map.querySourceFeatures('points1');
+
+    map.on('click', 'points1', function(e) {
+	
+	if (typeof popup=="object") popup.remove();
+	var features = map.querySourceFeatures('points1');
      console.log(features);
-map.on('click', 'points1', function(e) {
-    if (typeof popup=="object") popup.remove();
+
     var lats=e.lngLat;
     var htm=e.features[0]["properties"]["title"]+" "+e.features[0]["properties"]["color"];
 popup=new mapboxgl.Popup()
