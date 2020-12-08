@@ -34,8 +34,6 @@ var dd=map.addSource('points1', {
 'type': 'geojson',
 'data': 'supercommunities_twitter_improved_all2_short_last2_7_1_updated2_filtered_5.json'
 });
-    var features = map.querySourceFeatures('points1');
-    console.log(features);
 // Add a symbol layer                                                                                                                                                                
 map.addLayer({
 'id': 'points1',
@@ -54,7 +52,8 @@ map.addLayer({
 }
 });    
     
-
+    var features = map.querySourceFeatures('points1');
+     console.log(features);
 map.on('click', 'points1', function(e) {
     if (typeof popup=="object") popup.remove();
     var lats=e.lngLat;
