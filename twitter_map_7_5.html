@@ -73,6 +73,7 @@ popup=new mapboxgl.Popup()
 	    .then(data => {
 		var dd=data[l];
 		var kkeys=d3.keys(dd);
+		kkeys.push(l);
 		//console.log(d3.values(dd));
 		//console.log(dd);
 
