@@ -84,52 +84,11 @@ for (var i=0; i<kkeys.length; i++) {
     kks.push(kkeys[i]);
      kks0.push(2);
     vals.push(2+d3.values(dd)[i]/d3.sum(d3.values(dd))*10);
-     vals0.push(0.5);
-/*		    
-map.setPaintProperty(
-  'points1', 
-  'circle-radius', 
-    ['match', ['get', 'id'], kkeys[i], 2+d3.values(dd)[i]/d3.sum(d3.values(dd))*10 ]
-);
-
-    map.setPaintProperty(
-  'points1',
-  'circle-opacity',
-    ['match', ['get', 'id'], kkeys[i], 1 ]
-);
-*/
+    vals0.push(0.5);
 		}		    
-
-
-
-/*
-
-		map.setPaintProperty(
-  'points1',
-    'circle-radius', ['match', ['get', 'id'], kks,kks0 ]  
-                );
-
-                 map.setPaintProperty(
-  'points1',
-		     'circle-opacity',['match', ['get', 'id'],vals,vals0]
-                );
-*/
-		console.log(kkeys);
-//		map.setFilter("points1", '==', ['get', 'id'], kkeys);
-		//	    });
-map.setPaintProperty("points1", 'circle-opacity', ['match', ['get', 'id'], kkeys, 1.0,0]);
-/*      
-map.setPaintProperty(
-  ['match', ['get', 'title'], 'example-id', 0.5 , 1], 'circle-radius',0 
-//  ['match', ['get', 'id'], 'example-id', 0.5 , 1]
-);
-*/
-
-//});
-
-
-    
-
+		map.setPaintProperty("points1", 'circle-opacity', ['match', ['get', 'id'], kkeys, 1.0,0]);
+	    });
+    });
 });
 </script>
  
