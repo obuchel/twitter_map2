@@ -87,6 +87,7 @@ for (var i=0; i<kkeys.length; i++) {
     vals0.push(0.5);
 		}		    
 		map.setPaintProperty("points1", 'circle-opacity', ['match', ['get', 'id'], kkeys, 1.0,0]);
+		map.setPaintProperty("points1", 'circle-stroke-opacity', ['match', ['get', 'id'], kkeys, 1.0,0]);
 	    });
     });
 });
