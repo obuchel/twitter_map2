@@ -117,8 +117,13 @@ map.setPaintProperty(
                 );
 */
 		console.log(kkeys);
-		map.setFilter("points1", '==', ['get', 'id'], kkeys);
-	    });	
+//		map.setFilter("points1", '==', ['get', 'id'], kkeys);
+		//	    });
+
+		map.setPaintProperty("points1", 'circle-opacity', ['match', ['get', 'id'], 
+    kkeys, 1.0,
+    0]
+);
 /*      
 map.setPaintProperty(
   ['match', ['get', 'title'], 'example-id', 0.5 , 1], 'circle-radius',0 
