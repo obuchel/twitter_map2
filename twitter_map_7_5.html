@@ -125,7 +125,7 @@ for (var i=0; i<features.length; i++) {
     var kk=features[i]["properties"]["title"].split(", ")[1].split(" ");
     var first=kk[0];
     var col=features[i]["properties"]["color"];
-    if (first not in d3.keys(kkeys)) {
+    if (d3.keys(kkeys).indexOf(first)==-1) {
 	kkeys[first]=[];
 	if (second not in kkeys[first]){
             kkeys[first].push(second);
@@ -135,7 +135,7 @@ for (var i=0; i<features.length; i++) {
     }
     else {
 
-    if (second not in kkeys[first]){
+	if (kkeys[first].indexOf(second)==-1){
       	    kkeys[first].push(second);
 
 	}
