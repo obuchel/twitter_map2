@@ -11,10 +11,44 @@
 <style>
 	body { margin: 0; padding: 0; }
 	#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+	/**
+* Set rules for how the map overlays
+* (information box and legend) will be displayed
+* on the page. */
+.map-overlay {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  margin-right: 20px;
+  font-family: Arial, sans-serif;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+
+#legend {
+  padding: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  line-height: 18px;
+  height: 150px;
+  margin-bottom: 40px;
+  width: 100px;
+}
+
+.legend-key {
+  display: inline-block;
+  border-radius: 20%;
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+}
 </style>
 </head>
 <body>
-<div id="map"></div>
+  <div id="map"></div>
+  <div class='map-overlay' id='legend'></div>
 <script>
   var popup;
   
@@ -25,7 +59,13 @@ style: 'mapbox://styles/mapbox/light-v10',
 center: [-96, 37.8],
 zoom: 3
 });
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');      
+map.addControl(new mapboxgl.FullscreenControl(), 'bottom-left');
+// disable map rotation using right click + drag
+map.dragRotate.disable();
  
+// disable map rotation using touch rotation gesture
+map.touchZoomRotate.disableRotation();  
 map.on('load', function () {
     // Add an image to use as a custom marker
 
