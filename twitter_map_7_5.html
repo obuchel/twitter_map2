@@ -73,7 +73,9 @@ map.dragRotate.disable();
 // disable map rotation using touch rotation gesture
 map.touchZoomRotate.disableRotation();  
 map.on('load', function () {
-map.getCanvas().style.cursor = 'default';
+    map.getCanvas().style.cursor = 'default';
+
+/*    
     // Add an image to use as a custom marker
 var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
 var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
@@ -92,7 +94,7 @@ for (i = 0; i < layers.length; i++) {
   item.appendChild(value);
   legend.appendChild(item);
 }
-
+*/
 var dd=map.addSource('points1', {
 'type': 'geojson',
 'data': 'supercommunities_twitter_improved_all2_short_last2_7_1_updated2_filtered_5.json'
@@ -116,7 +118,52 @@ map.addLayer({
 });    
 map.once('idle', function(e) {    
 const features = map.querySourceFeatures('points1');                                                                                                                         
-    console.log(features);
+    //console.log(features);
+    var kkeys={};    
+for (var i=0; i<features.length; i++) {
+    var second=features[i]["properties"]["title"].split(", ")[0];
+    var kk=features[i]["properties"]["title"].split(", ")[1].split(" ");
+    var first=kk[0];
+    var col=features[i]["properties"]["color"];
+    if (first not in d3.keys(kkeys)) {
+	kkeys[first]=[];
+	if (second not in kkeys[first]){
+            kkeys[first].push(second);
+
+	}
+	
+    }
+    else {
+
+    if (second not in kkeys[first]){
+      	    kkeys[first].push(second);
+
+	}
+
+    }
+    
+}
+    console.log(kkeys);
+var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
+var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
+
+for (i = 0; i < layers.length; i++) {
+  var layer = layers[i];
+  var color = colors[i];
+  var item = document.createElement('div');
+  var key = document.createElement('span');
+  key.className = 'legend-key';
+  key.style.backgroundColor = color;
+
+  var value = document.createElement('span');
+  value.innerHTML = layer;
+  item.appendChild(key);
+  item.appendChild(value);
+  legend.appendChild(item);
+}
+
+
+    
 });
     map.on('click', 'points1', function(e) {
 
