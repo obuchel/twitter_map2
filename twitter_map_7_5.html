@@ -127,7 +127,7 @@ for (var i=0; i<features.length; i++) {
     var col=features[i]["properties"]["color"];
     if (d3.keys(kkeys).indexOf(first)==-1) {
 	kkeys[first]=[];
-	if (second not in kkeys[first]){
+	if (kkeys[first].indexOf(second)==-1){
             kkeys[first].push(second);
 
 	}
