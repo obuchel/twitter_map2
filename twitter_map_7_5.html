@@ -1,4 +1,6 @@
 
+1;95;0c
+
 
 <!DOCTYPE html>
 <html>
@@ -59,7 +61,10 @@
 <div class='group3' id='group3'>Megagroup 3:</div>
 <div class='group4' id='group4'>Other communities:</div>
   </div>
-<script>
+  <script>
+    var classes=[];
+    var features=[];
+    var current_array=[];
   var popup;
   var layer;
  var item0 = document.createElement('div');
@@ -90,31 +95,12 @@ map.touchZoomRotate.disableRotation();
 map.on('load', function () {
     map.getCanvas().style.cursor = 'default';
 
-/*    
-    // Add an image to use as a custom marker
-var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
-var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
 
-for (i = 0; i < layers.length; i++) {
-  var layer = layers[i];
-  var color = colors[i];
-  var item = document.createElement('div');
-  var key = document.createElement('span');
-  key.className = 'legend-key';
-  key.style.backgroundColor = color;
-
-  var value = document.createElement('span');
-  value.innerHTML = layer;
-  item.appendChild(key);
-  item.appendChild(value);
-  legend.appendChild(item);
-}
-*/
 var dd=map.addSource('points1', {
 'type': 'geojson',
 'data': 'supercommunities_twitter_improved_all2_short_last2_7_1_updated2_filtered_5.json'
 });
-// Add a symbol layer                                                                                                                                                                
+// Add a symbol layer                                                                                                                                                               
 layer=map.addLayer({
 'id': 'points1',
 'type': 'circle',
@@ -131,16 +117,21 @@ layer=map.addLayer({
 
 }
 });    
-map.once('idle', function(e) {    
-const features = map.querySourceFeatures('points1');                                                                                                                         
-    //console.log(features);
+    map.once('idle', function(e) {
+	features=[];
+    features = map.querySourceFeatures('points1');
+ //console.log(features.length);
     var kkeys={};
 
     var kkeys0={};
-for (var i=0; i<features.length; i++) {
+    for (var i=0; i<features.length; i++) {
+	
     var second=features[i]["properties"]["title"].split(", ")[0];
     var kk=features[i]["properties"]["title"].split(", ")[1].split(" ");
-    var first=kk[0];
+	var first=kk[0];
+	features[i]["class0"]=first+"_"+second;
+	features[i]["properties"]["class0"]=first+"_"+second;
+	classes.push(features[i]["class0"]);
     var col=features[i]["properties"]["color"];
     if (col!=="#A0A0A0") {
     if (d3.keys(kkeys).indexOf(first)==-1) {
@@ -171,7 +162,7 @@ for (var i=0; i<features.length; i++) {
 
     }
 }
-//    console.log(kkeys);
+   // console.log(classes);
 //var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
 //var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
     var ll=[0,1,2,3];
@@ -266,10 +257,38 @@ cb.value = ll1[u]+"_"+layer;
 });
 
 
-        function getCheckedValue(e){
-        if (document.getElementById("checkM").checked==true && e.target.checked==false) {
-      	    alert("hjjjj");
-        }
+    function getCheckedValue(e){
+        //if (document.getElementById("checkM").checked==true && e.target.checked==false) {
+	var all_groups=[];
+    var inputs0=document.getElementsByClassName("checkbox0");
+    for (var i=0; i<inputs0.length; i++) {
+        if (inputs0[i].checked==true) {
+	    all_groups.push(inputs0[i].id);
+	}
+	    //.addEventListener("change",getCheckedValue,false);
+    }
+	//console.log(all_groups);
+ var kks1=[];
+	
+	    //var kks=[];
+	    for (var i=0; i<features.length; i++) {
+		if (all_groups.indexOf(features[i]["properties"]["class0"])!=-1){
+		    if (features[i]["properties"]["id"]!="undefined" && kks1.indexOf(features[i]["properties"]["id"])==-1){
+                    features[i]["id"]=features[i]["properties"]["id"];
+		    
+			kks1.push(features[i]["properties"]["id"]);
+
+		    }
+		    }
+	}
+            console.log(kks1);
+	    
+	//console.log(features);
+	
+	map.setPaintProperty("points1", 'circle-opacity', ['match', ['get', 'id'],kks1,1.0,0]);
+            map.setPaintProperty("points1", 'circle-stroke-opacity', ['match', ['get', 'id'], kks1, 1.0,0]);
+//	}
+	     console.log(features.length);
   }
     map.on('click', 'points1', function(e) {
 
@@ -308,7 +327,7 @@ for (var i=0; i<kkeys.length; i++) {
     vals0.push(0.5);
 }
 
-		console.log(kkeys);
+		//console.log(kkeys);
 		map.setPaintProperty("points1", 'circle-opacity', ['match', ['get', 'id'], kkeys, 1.0,0.1]);
 		map.setPaintProperty("points1", 'circle-stroke-opacity', ['match', ['get', 'id'], kkeys, 1.0,0.1]);
 	    });
