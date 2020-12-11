@@ -44,20 +44,35 @@
   width: 10px;
   height: 10px;
   margin-right: 5px;
+  border-style: solid;
+  border-width:1px;
 }
 </style>
 </head>
 <body>
   <div id="map"></div>
   <div class='map-overlay' id='legend'>
-    <div class='group0' id='group0'></div>
-    <div class='group1' id='group1'></div>
-<div class='group2' id='group2'></div>
-<div class='group3' id='group3'></div>
+    <div class='legend0' id='legend0'></div>
+    <div class='group0' id='group0'>Megagroup 0:</div>
+    <div class='group1' id='group1'>Megagroup 1:</div>
+<div class='group2' id='group2'>Megagroup 2:</div>
+<div class='group3' id='group3'>Megagroup 3:</div>
+<div class='group4' id='group4'>Other communities:</div>
   </div>
 <script>
   var popup;
-  
+  var layer;
+ var item0 = document.createElement('div');
+var cb = document.createElement( "input" );
+cb.type = "checkbox";
+cb.id = "checkM";
+cb.value = "checkM";
+cb.checked = true;
+  item0.append(cb);
+  var value0 = document.createElement('span');
+  value0.innerHTML = "Select All";
+  item0.appendChild(value0);
+ document.getElementById("legend0").appendChild(item0);  
 mapboxgl.accessToken = 'pk.eyJ1Ijoib2J1Y2hlbCIsImEiOiJmOWQ2MzQxNmE0M2Y3YmVjNzA2NmM2MGQzYTIwYmQ3OCJ9.psxJSN8q9n2-HfFGoIUNJA';
 var map = new mapboxgl.Map({
 container: 'map',
@@ -100,7 +115,7 @@ var dd=map.addSource('points1', {
 'data': 'supercommunities_twitter_improved_all2_short_last2_7_1_updated2_filtered_5.json'
 });
 // Add a symbol layer                                                                                                                                                                
-map.addLayer({
+layer=map.addLayer({
 'id': 'points1',
 'type': 'circle',
 'source': 'points1',
@@ -119,52 +134,143 @@ map.addLayer({
 map.once('idle', function(e) {    
 const features = map.querySourceFeatures('points1');                                                                                                                         
     //console.log(features);
-    var kkeys={};    
+    var kkeys={};
+
+    var kkeys0={};
 for (var i=0; i<features.length; i++) {
     var second=features[i]["properties"]["title"].split(", ")[0];
     var kk=features[i]["properties"]["title"].split(", ")[1].split(" ");
     var first=kk[0];
     var col=features[i]["properties"]["color"];
+    if (col!=="#A0A0A0") {
     if (d3.keys(kkeys).indexOf(first)==-1) {
 	kkeys[first]=[];
-	if (kkeys[first].indexOf(second)==-1){
-            kkeys[first].push(second);
-
+	if (kkeys[first].indexOf(second+"_"+col)==-1){
+            kkeys[first].push(second+"_"+col);
 	}
-	
     }
     else {
-
-	if (kkeys[first].indexOf(second)==-1){
-      	    kkeys[first].push(second);
-
+	if (kkeys[first].indexOf(second+"_"+col)==-1){
+      	    kkeys[first].push(second+"_"+col);
 	}
+    }
+    } else {
+ if (d3.keys(kkeys0).indexOf(first)==-1) {
+        kkeys0[first]=[];
+        if (kkeys0[first].indexOf(second+"_"+col)==-1){
+            kkeys0[first].push(second+"_"+col);
+        }
+    }
+    else {
+        if (kkeys0[first].indexOf(second+"_"+col)==-1){
+            kkeys0[first].push(second+"_"+col);
+        }
+    }
+
+
 
     }
-    
 }
-    console.log(kkeys);
-var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
-var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
-
-for (i = 0; i < layers.length; i++) {
-  var layer = layers[i];
-  var color = colors[i];
+//    console.log(kkeys);
+//var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
+//var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
+    var ll=[0,1,2,3];
+for (u = 0; u < ll.length; u++) {
+for (i = 0; i < kkeys[ll[u]].length; i++) {
+  var layer = kkeys[ll[u]][i].split("_")[0];
+  var color = kkeys[ll[u]][i].split("_")[1];
   var item = document.createElement('div');
   var key = document.createElement('span');
   key.className = 'legend-key';
   key.style.backgroundColor = color;
+//Create checkbox dynamically       
+var cb = document.createElement( "input" );
+    cb.type = "checkbox";
+    cb.className = "checkbox0";
+cb.id = ll[u]+"_"+layer;
+cb.value = ll[u]+"_"+layer;
+    cb.checked = true;
 
+    item.append(cb);    
   var value = document.createElement('span');
   value.innerHTML = layer;
   item.appendChild(key);
   item.appendChild(value);
-  legend.appendChild(item);
+    document.getElementById("group"+ll[u].toString()).appendChild(item);
+}
+}
+ var ll0=d3.keys(kkeys0);
+for (u = 0; u < ll0.length; u++) {
+for (i = 0; i < kkeys0[ll0[u]].length; i++) {
+  var layer = kkeys0[ll0[u]][i].split("_")[0];
+  var color = kkeys0[ll0[u]][i].split("_")[1];
+  var item = document.createElement('div');
+  var key = document.createElement('span');
+  key.className = 'legend-key';
+  key.style.backgroundColor = color;
+var cb = document.createElement( "input" );
+    cb.type = "checkbox";
+    cb.className = "checkbox0";
+cb.id = ll0[u]+"_"+layer;
+cb.value = ll0[u]+"_"+layer;
+    cb.checked = true;
+
+    item.append(cb);
+  var value = document.createElement('span');
+  value.innerHTML = layer;
+  item.appendChild(key);
+  item.appendChild(value);
+    document.getElementById("group4").appendChild(item);
+}
 }
 
-
     
+
+    var ll1=d3.keys(kkeys);
+    ll1.shift();
+    ll1.shift();
+    ll1.shift();
+    ll1.shift();
+    //console.log(ll1)
+for (u = 0; u < ll1.length; u++) {
+for (i = 0; i < kkeys[ll1[u]].length; i++) {
+  var layer = kkeys[ll1[u]][i].split("_")[0];
+  var color = kkeys[ll1[u]][i].split("_")[1];
+  var item = document.createElement('div');
+  var key = document.createElement('span');
+  key.className = 'legend-key';
+  key.style.backgroundColor = color;
+var cb = document.createElement( "input" );
+    cb.type = "checkbox";
+
+    cb.className = "checkbox0";
+cb.id = ll1[u]+"_"+layer;
+cb.value = ll1[u]+"_"+layer;
+    cb.checked = true;
+
+    item.append(cb);
+  var value = document.createElement('span');
+  value.innerHTML = layer;
+  item.appendChild(key);
+  item.appendChild(value);
+    document.getElementById("group4").appendChild(item);
+}
+}
+    
+//});
+    var inputs0=document.getElementsByClassName("checkbox0")
+
+    for (var i=0; i<inputs0.length; i++) {
+	inputs0[i].addEventListener("change",getCheckedValue,false);
+    }
 });
+
+
+        function getCheckedValue(e){
+        if (document.getElementById("checkM").checked==true && e.target.checked==false) {
+      	    alert("hjjjj");
+        }
+  }
     map.on('click', 'points1', function(e) {
 
 //var features = map.querySourceFeatures('points1');
@@ -180,7 +286,7 @@ popup=new mapboxgl.Popup()
 .setHTML(htm)
 	    .addTo(map);
 	var l=e.features[0]['properties']['title'].split(' ')[2];
-	//console.log(l);
+	console.log(l);
 
 	fetch(l.substr(0,2)+'.json')
   .then(response => response.json())
@@ -200,12 +306,36 @@ for (var i=0; i<kkeys.length; i++) {
      kks0.push(2);
     vals.push(2+d3.values(dd)[i]/d3.sum(d3.values(dd))*10);
     vals0.push(0.5);
-}		    
+}
+
+		console.log(kkeys);
 		map.setPaintProperty("points1", 'circle-opacity', ['match', ['get', 'id'], kkeys, 1.0,0.1]);
 		map.setPaintProperty("points1", 'circle-stroke-opacity', ['match', ['get', 'id'], kkeys, 1.0,0.1]);
 	    });
     });
 });
+  function filter_points(e){
+      if (e.target.checked==false) {
+	  map.setPaintProperty("points1", 'circle-opacity', 0);
+	  map.setPaintProperty("points1", 'circle-stroke-opacity', 0);
+	  var inputs=document.getElementsByClassName("checkbox0");
+  for(var i = 0, l = inputs.length; i < l; ++i) {
+   inputs[i].checked = false;
+  }
+      } else {
+map.setPaintProperty("points1", 'circle-opacity', 1);
+map.setPaintProperty("points1", 'circle-stroke-opacity', 1);
+          var inputs=document.getElementsByClassName("checkbox0");
+  for(var i = 0, l = inputs.length; i < l; ++i) {
+   inputs[i].checked = true;
+  }
+      }
+  }
+  document.getElementById("checkM").addEventListener("click",filter_points, false);
+
+
+
+  
 </script>
  
 </body>
