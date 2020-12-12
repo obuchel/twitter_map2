@@ -1,6 +1,4 @@
 
-1;95;0c
-
 
 <!DOCTYPE html>
 <html>
@@ -62,7 +60,20 @@
 <div class='group4' id='group4'>Other communities:</div>
   </div>
   <script>
+     //  var all_classes={};   
+fetch('supercommunities_twitter_improved_all2_short_last2_7_1_updated2_filtered_5.json')
+  .then(response => response.json())
+	    .then(data0 => {
+            
+            
+fetch('links.json')
+  .then(response => response.json())
+	    .then(all_classes => {
+                    
+                    
+                    
     var classes=[];
+        
     var features=[];
     var current_array=[];
   var popup;
@@ -92,34 +103,13 @@ map.dragRotate.disable();
 
 // disable map rotation using touch rotation gesture
 map.touchZoomRotate.disableRotation();  
-map.on('load', function () {
-    map.getCanvas().style.cursor = 'default';
 
 
-var dd=map.addSource('points1', {
-'type': 'geojson',
-'data': 'supercommunities_twitter_improved_all2_short_last2_7_1_updated2_filtered_5.json'
-});
-// Add a symbol layer                                                                                                                                                               
-layer=map.addLayer({
-'id': 'points1',
-'type': 'circle',
-'source': 'points1',
-    'paint':{
-// make circles larger as the user zooms from z12 to z22                                                                                                                            
- //   'circle-radius': 3,                                                                                                                                                           
-    'circle-radius': ['get', 's'],
-// color circles by ethnicity, using a match expression                                                                                                                             
-// https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-match                                                                                                               
-    'circle-color': ['get', 'color'],
-    'circle-stroke-color':'#000000',
-    'circle-stroke-width':0.2
 
-}
-});    
-    map.once('idle', function(e) {
-	features=[];
-    features = map.querySourceFeatures('points1');
+
+   // 
+	//features=[];
+    features = data0["features"];
  //console.log(features.length);
     var kkeys={};
 
@@ -131,7 +121,14 @@ layer=map.addLayer({
 	var first=kk[0];
 	features[i]["class0"]=first+"_"+second;
 	features[i]["properties"]["class0"]=first+"_"+second;
-	classes.push(features[i]["class0"]);
+  /*  if (d3.keys(all_classes).indexOf(features[i]["class0"])==-1) {
+        all_classes[features[i]["class0"]]=[kk[1]];
+    }    else {
+        all_classes[features[i]["class0"]].push(kk[1]);
+    }*/
+	features[i]["properties"]["id"]=kk[1];
+	features[i]["id"]=kk[1];
+	//classes.push(features[i]["class0"]);
     var col=features[i]["properties"]["color"];
     if (col!=="#A0A0A0") {
     if (d3.keys(kkeys).indexOf(first)==-1) {
@@ -144,8 +141,11 @@ layer=map.addLayer({
 	if (kkeys[first].indexOf(second+"_"+col)==-1){
       	    kkeys[first].push(second+"_"+col);
 	}
+    
     }
-    } else {
+    } 
+        
+        else {
  if (d3.keys(kkeys0).indexOf(first)==-1) {
         kkeys0[first]=[];
         if (kkeys0[first].indexOf(second+"_"+col)==-1){
@@ -160,8 +160,34 @@ layer=map.addLayer({
 
 
 
-    }
+   
+        
+            //console.log(features[i]["properties"]["class0"],features[i]["properties"]["id"],features[i]["id"]);
+        }
+        
+        // features[i]["properties"]["id"]=kk[1];
+	//features[i]["id"]=kk[1];
 }
+    
+ map.on('load', function () {
+    map.getCanvas().style.cursor = 'default';   
+map.addSource('points1', {
+'type': 'geojson',
+'data': {"type":"FeatureCollection", "features":features}
+});
+// Add a symbol layer                                                                                                                                                               
+map.addLayer({
+'id': 'points1',
+'type': 'circle',
+'source': 'points1',
+    'paint':{          
+    'circle-radius': ['get', 's'],                                               'circle-color': ['get', 'color'],
+    'circle-stroke-color':'#000000',
+    'circle-stroke-width':0.2
+}
+});    
+
+    map.once('idle', function(e) {
    // console.log(classes);
 //var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
 //var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
@@ -191,6 +217,7 @@ cb.value = ll[u]+"_"+layer;
 }
 }
  var ll0=d3.keys(kkeys0);
+       // console.log(kkeys0);
 for (u = 0; u < ll0.length; u++) {
 for (i = 0; i < kkeys0[ll0[u]].length; i++) {
   var layer = kkeys0[ll0[u]][i].split("_")[0];
@@ -214,9 +241,6 @@ cb.value = ll0[u]+"_"+layer;
     document.getElementById("group4").appendChild(item);
 }
 }
-
-    
-
     var ll1=d3.keys(kkeys);
     ll1.shift();
     ll1.shift();
@@ -231,7 +255,7 @@ for (i = 0; i < kkeys[ll1[u]].length; i++) {
   var key = document.createElement('span');
   key.className = 'legend-key';
   key.style.backgroundColor = color;
-var cb = document.createElement( "input" );
+var cb = document.createElement("input");
     cb.type = "checkbox";
 
     cb.className = "checkbox0";
@@ -256,40 +280,80 @@ cb.value = ll1[u]+"_"+layer;
     }
 });
 
-
     function getCheckedValue(e){
+       // console.log(JSON.stringify(all_classes));
         //if (document.getElementById("checkM").checked==true && e.target.checked==false) {
 	var all_groups=[];
+        
+         var kks1=[];
     var inputs0=document.getElementsByClassName("checkbox0");
     for (var i=0; i<inputs0.length; i++) {
         if (inputs0[i].checked==true) {
 	    all_groups.push(inputs0[i].id);
+           // kks1.all_classes[inputs0[i].id]
+           var kks2=kks1.concat(all_classes[inputs0[i].id]);
+            
+            kks1=kks2;
 	}
 	    //.addEventListener("change",getCheckedValue,false);
     }
+        
+        if (all_groups.length==0) {
+           map.setPaintProperty("points1", 'circle-opacity', 0,0);
+        map.setPaintProperty("points1", 'circle-stroke-opacity', 0,0); 
+            
+        }
 	//console.log(all_groups);
- var kks1=[];
+//kks1=["9qdqm"];
 	
-	    //var kks=[];
+	   /* //var kks=[];
 	    for (var i=0; i<features.length; i++) {
 		if (all_groups.indexOf(features[i]["properties"]["class0"])!=-1){
-		    if (features[i]["properties"]["id"]!="undefined" && kks1.indexOf(features[i]["properties"]["id"])==-1){
+		    if (features[i]["properties"]["id"]!="undefined"){
+			if (kks1.indexOf(features[i]["properties"]["id"])==-1){
                     features[i]["id"]=features[i]["properties"]["id"];
 		    
-			kks1.push(features[i]["properties"]["id"]);
+			kks1.push(features[i]["id"]);
 
+			}
+		    } else{
+			console.log(features[i]["properties"]);
 		    }
 		    }
-	}
-            console.log(kks1);
+	}*/
+           
 	    
-	//console.log(features);
-	
+	//console.log(kks1);
+	if (kks1.length>0) {
+       // console.log(map.querySourceFeatures('points1').filter(function(d){return d.properties.color=="#A0A0A0";}));
+        /*
+var dd={"type":"FeatureCollection", "features":map.querySourceFeatures('points1').filter(function(d){return d.properties.color=="#A0A0A0";})};
+        
+        map.addSource('points2', {
+'type': 'geojson',
+'data': dd
+});
+// Add a symbol layer                                                                                                                                                               
+map.addLayer({
+'id': 'points2',
+'type': 'circle',
+'source': 'points2',
+    'paint':{          
+    'circle-radius': ['get', 's'],                                               'circle-color': ['get', 'color'],
+    'circle-stroke-color':'#000000',
+    'circle-stroke-width':0.2
+}
+});    */
 	map.setPaintProperty("points1", 'circle-opacity', ['match', ['get', 'id'],kks1,1.0,0]);
-            map.setPaintProperty("points1", 'circle-stroke-opacity', ['match', ['get', 'id'], kks1, 1.0,0]);
-//	}
-	     console.log(features.length);
+        map.setPaintProperty("points1", 'circle-stroke-opacity', ['match', ['get', 'id'], kks1, 1.0,0]);
+      // map.setPaintProperty("points1", 'circle-radius', ['match', ['get', 'id'],kks1,30,0]);
+       // map.setPaintProperty("points1", 'circle-color', ['match', ['get', 'id'],kks1,"#A0A0A0","#000000"]);
+	}
+//     console.log(features.length);
   }
+    
+    
+    
     map.on('click', 'points1', function(e) {
 
 //var features = map.querySourceFeatures('points1');
@@ -299,15 +363,15 @@ cb.value = ll1[u]+"_"+layer;
      //console.log(features);
 
     var lats=e.lngLat;
-    var htm=e.features[0]["properties"]["title"]+" "+e.features[0]["properties"]["color"];
+    var htm=e.features[0]["properties"]["title"];//+" "+e.features[0]["properties"]["color"];
 popup=new mapboxgl.Popup()
 .setLngLat(lats)
 .setHTML(htm)
 	    .addTo(map);
-	var l=e.features[0]['properties']['title'].split(' ')[2];
-	console.log(l);
+	//var l=e.features[0]['properties']['title'].split(' ')[2];
+	//console.log(l);
 
-	fetch(l.substr(0,2)+'.json')
+	/*fetch(l.substr(0,2)+'.json')
   .then(response => response.json())
 	    .then(data => {
 		var dd=data[l];
@@ -330,7 +394,7 @@ for (var i=0; i<kkeys.length; i++) {
 		//console.log(kkeys);
 		map.setPaintProperty("points1", 'circle-opacity', ['match', ['get', 'id'], kkeys, 1.0,0.1]);
 		map.setPaintProperty("points1", 'circle-stroke-opacity', ['match', ['get', 'id'], kkeys, 1.0,0.1]);
-	    });
+	    });*/
     });
 });
   function filter_points(e){
@@ -353,7 +417,9 @@ map.setPaintProperty("points1", 'circle-stroke-opacity', 1);
   document.getElementById("checkM").addEventListener("click",filter_points, false);
 
 
-
+        });
+            
+                 });
   
 </script>
  
