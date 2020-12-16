@@ -363,7 +363,7 @@ map.addLayer({
      //console.log(features);
 
     var lats=e.lngLat;
-    var htm=e.features[0]["properties"]["title"];//+" "+e.features[0]["properties"]["color"];
+	var htm="Megacommunity: "+e.features[0]["properties"]["title"].split(" ")[1]+"<br>Community: "+e.features[0]["properties"]["title"].split(", ")[0];//+" "+e.features[0]["properties"]["color"];
 popup=new mapboxgl.Popup()
 .setLngLat(lats)
 .setHTML(htm)
